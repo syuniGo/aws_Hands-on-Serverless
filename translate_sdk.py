@@ -8,7 +8,7 @@ logger.setLevel("INFO")
 translate = boto3.client('translate')
 
 def lambda_handler(event, context):
-    input_text = 'おはよう'
+    input_text = event['queryStringParameters']['input_text']
     logger.info(f'## EVENT  {input_text}')
 
     response = translate.translate_text(
@@ -21,5 +21,7 @@ def lambda_handler(event, context):
         'statusCode': 200,
         'body': json.dumps({
             'output_text':output_text
-        })
+        }),
+        'isBase64Encoded': False,
+        'headers': {}
     }
